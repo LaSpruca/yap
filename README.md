@@ -29,7 +29,7 @@ You can also use `create_effect` which will subscribe to all stores called withi
 it and run again
 
 ```ts
-improt { create_store, create_effect } from "yap";
+import { create_store, create_effect } from "yap";
 
 const a = create_store("a");
 
