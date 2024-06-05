@@ -23,7 +23,7 @@ export type CallableStore<T> = Store<T> &
 
 let globalTable: Store<unknown>[] | undefined;
 
-export function create_store<T>(initial: T): CallableStore<T> {
+export function createStore<T>(initial: T): CallableStore<T> {
   const value = {
     [YAP_STORE]: true as const,
     currentValue: initial,
@@ -65,13 +65,14 @@ export function create_store<T>(initial: T): CallableStore<T> {
   );
 }
 
-export function create_effect(fn: () => void) {
+export function createEffect(fn: () => void) {
   const currentTable: Store<unknown>[] = [];
+  const storedTable = globalTable;
   globalTable = currentTable;
 
   fn();
 
-  globalTable = undefined;
+  globalTable = storedTable;
 
   for (const item of currentTable) {
     item.createListener(fn);
@@ -85,7 +86,7 @@ export function create_effect(fn: () => void) {
 }
 
 function isSignal<T>(val: T | Signal<T>): val is Signal<T> {
-  return (val as Signal<T>)[YAP_STORE];
+  return (val as Signal<T>)?.[YAP_STORE];
 }
 
 export function get<T>(item: MaybeSignal<T>) {
