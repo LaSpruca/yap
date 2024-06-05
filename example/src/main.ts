@@ -8,7 +8,7 @@ import {
   createStore,
   get,
   forEach,
-} from "$yap";
+} from "yap";
 
 const Windows32 = (name: MaybeSignal<string>) =>
   text(() => "Hello " + get(name));
@@ -32,10 +32,10 @@ const FormElement = () => {
           [() => name() == "aab", text("AAB")],
           [() => name() == "aa", text("AA")],
         ],
-        Windows32(name),
+        Windows32(name)
       ),
     ],
-    { class: "" },
+    { class: "" }
   );
 };
 
@@ -45,7 +45,7 @@ const Root = () => {
   return forEach(
     things,
     () => FormElement(),
-    (_, i) => `${i}`,
+    (_, i) => `${i}`
   );
 };
 
