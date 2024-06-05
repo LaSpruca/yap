@@ -1,10 +1,10 @@
-import { MaybeSignal, create_effect, get } from "./yap";
+import { MaybeSignal, create_effect, get } from "./signals";
 
 type YapElement = (parent: HTMLElement) => () => void;
 
 export type DivProps = {};
 
-export function div(children: YapElement[], options?: DivProps) {
+export function div(children: YapElement[], _options?: DivProps) {
   return (parent: HTMLElement) => {
     const element = document.createElement("div");
 

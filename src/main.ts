@@ -1,5 +1,12 @@
-import { conditions, div, input, text } from "./elements";
-import { MaybeSignal, create_store, get } from "./yap";
+import {
+  conditions,
+  div,
+  input,
+  text,
+  MaybeSignal,
+  create_store,
+  get,
+} from "./lib/yap";
 
 const windows32 = (name: MaybeSignal<string>) =>
   text(() => "Hello " + get(name));
