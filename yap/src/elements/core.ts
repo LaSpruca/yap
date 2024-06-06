@@ -17,16 +17,38 @@ export function addClassAndId(
   };
 }
 
-export function renderChildren(parent: HTMLElement, children: YapElement[]) {
-  const childrenEffects: (() => void)[] = [];
-
-  for (const child of children) {
-    childrenEffects.push(child(parent));
-  }
-
-  return () => {
-    for (const removeChild of childrenEffects) {
-      removeChild();
+export function renderChildren(
+  parent: HTMLElement,
+  children: YapElement[] | MaybeSignal<string>,
+) {
+  if (Array.isArray(children)) {
+    const childrenEffects: (() => void)[] = [];
+    for (const child of children) {
+      childrenEffects.push(child(parent));
     }
+
+    return () => {
+      for (const removeChild of childrenEffects) {
+        removeChild();
+      }
+    };
+  } else {
+    return textNode(children)(parent);
+  }
+}
+
+export function textNode(text: MaybeSignal<string>) {
+  return (parent: HTMLElement) => {
+    const element = document.createTextNode("");
+
+    const destoryTextEffect = createEffect(() => {
+      element.data = get(text);
+    });
+    parent.appendChild(element);
+
+    return () => {
+      destoryTextEffect();
+      element.remove();
+    };
   };
 }
