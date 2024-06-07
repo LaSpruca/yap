@@ -92,3 +92,13 @@ function isSignal<T>(val: T | Signal<T>): val is Signal<T> {
 export function get<T>(item: MaybeSignal<T>) {
   return item instanceof Function ? item() : isSignal(item) ? item.get() : item;
 }
+
+export function untracked<T>(item: () => T) {
+  const prevTable = globalTable;
+  globalTable = [];
+
+  const result = item();
+
+  globalTable = prevTable;
+  return result;
+}
