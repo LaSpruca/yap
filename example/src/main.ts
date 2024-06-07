@@ -1,52 +1,26 @@
+import { conditions, div } from "yap";
 import "./style.css";
-import {
-  conditions,
-  div,
-  input,
-  text,
-  MaybeSignal,
-  createStore,
-  get,
-  forEach,
-} from "yap";
+import { currentTeleform } from "./stores";
+import teleform from "./components/teleform";
+import selectTeleform from "./components/selectTeleform";
 
-const Windows32 = (name: MaybeSignal<string>) =>
-  text(() => "Hello " + get(name));
-
-const FormElement = () => {
-  const name = createStore("");
-
+function root() {
   return div(
     [
-      text("Hello, what is your name"),
-      input({
-        type: "text",
-        onInput() {
-          name(this.value);
-        },
-        class: "input",
-      }),
-      conditions(
+      div(
         [
-          [() => name() == "a", text("A")],
-          [() => name() == "aab", text("AAB")],
-          [() => name() == "aa", text("AA")],
+          conditions(
+            [[() => currentTeleform() == undefined, selectTeleform()]],
+            teleform(),
+          ),
         ],
-        Windows32(name)
+        {
+          class: "max-w-4xl",
+        },
       ),
     ],
-    { class: "" }
+    { class: "flex items-center justify-center p-10" },
   );
-};
+}
 
-const Root = () => {
-  let things = Array(5).map((_, i) => i);
-
-  return forEach(
-    things,
-    () => FormElement(),
-    (_, i) => `${i}`
-  );
-};
-
-Root()(document.getElementById("app")!);
+root()(document.getElementById("app")!);

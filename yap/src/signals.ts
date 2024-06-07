@@ -66,23 +66,33 @@ export function createStore<T>(initial: T): CallableStore<T> {
 }
 
 export function createEffect(fn: () => void) {
-  const currentTable: Store<unknown>[] = [];
-  const storedTable = globalTable;
-  globalTable = currentTable;
+  const item = {
+    currentTable: [] as Store<unknown>[],
 
-  fn();
+    sync() {
+      this.remove();
+      const storedTable = globalTable;
+      globalTable = this.currentTable;
 
-  globalTable = storedTable;
+      fn();
 
-  for (const item of currentTable) {
-    item.createListener(fn);
-  }
+      globalTable = storedTable;
 
-  return () => {
-    for (const item of currentTable) {
-      item.removeListener(fn);
-    }
+      for (const item of this.currentTable) {
+        item.createListener(fn);
+      }
+    },
+
+    remove() {
+      for (const item of this.currentTable) {
+        item.removeListener(fn);
+      }
+    },
   };
+
+  item.sync();
+
+  return Object.assign(() => item.remove(), { ...item });
 }
 
 function isSignal<T>(val: T | Signal<T>): val is Signal<T> {

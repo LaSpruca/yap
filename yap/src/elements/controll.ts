@@ -4,32 +4,31 @@ import { createEffect, get } from "../signals";
 
 export function conditions(
   items: [MaybeSignal<boolean>, YapElement][],
-  fallback: YapElement = () => () => {}
+  fallback: YapElement = () => () => {},
 ) {
   return (parent: HTMLElement) => {
     let ci = items.length;
-    let unmount = fallback(parent);
+    let fallbackRendered = false;
+    let unmount = () => {};
 
     const removeListener = createEffect(() => {
-      let renderPrevFallback = ci != items.length;
+      const firstTrue = items
+        .map(([condition]) => get(condition))
+        .findIndex((condition) => condition);
 
-      if (ci < items.length && !get(items[ci][0])) {
-        unmount();
-        unmount = () => {};
-        ci = items.length;
-      }
+      const current = fallbackRendered ? get(items[ci][0]) : false;
 
-      for (let i = 0; i < items.length; i++) {
-        const [condition, renderElement] = items[i];
-        if (get(condition) && i < ci) {
+      if (firstTrue == -1) {
+        if (!fallbackRendered) {
           unmount();
-          unmount = renderElement(parent);
-          ci = i;
+          unmount = fallback(parent);
+          fallbackRendered = true;
         }
-      }
-
-      if (ci == items.length && renderPrevFallback) {
-        unmount = fallback(parent);
+      } else if (firstTrue < ci || !current) {
+        unmount();
+        unmount = items[firstTrue][1](parent);
+        ci = firstTrue;
+        fallbackRendered = false;
       }
     });
 
@@ -43,7 +42,7 @@ export function conditions(
 export function forEach<T>(
   itemsSignal: MaybeSignal<T[]>,
   extractKey: (item: T, index: number) => string,
-  render: (item: T) => YapElement
+  render: (item: T, index: number) => YapElement,
 ) {
   return (parent: HTMLElement) => {
     let rendered: Map<string, () => void> = new Map();
@@ -56,7 +55,7 @@ export function forEach<T>(
         const key = extractKey(items[i], i);
         keys.add(key);
         if (!rendered.has(key)) {
-          rendered.set(key, render(items[i])(parent));
+          rendered.set(key, render(items[i], i)(parent));
         }
       }
 
