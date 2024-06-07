@@ -41,8 +41,8 @@ export function conditions(
 
 export function forEach<T>(
   itemsSignal: MaybeSignal<T[]>,
-  render: (item: T) => YapElement,
   extractKey: (item: T, index: number) => string,
+  render: (item: T) => YapElement,
 ) {
   return (parent: HTMLElement) => {
     let rendered: Map<string, () => void> = new Map();

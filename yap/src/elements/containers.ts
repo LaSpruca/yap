@@ -24,3 +24,10 @@ export function div(children: YapElement[], options?: DivProps) {
     };
   };
 }
+
+export function fragment(children: YapElement[]) {
+  return (parent: HTMLElement) => {
+    const remove = children.map((child) => child(parent));
+    return () => remove.forEach((fn) => fn());
+  };
+}

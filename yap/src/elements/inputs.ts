@@ -27,7 +27,7 @@ export function input({ onInput, type, class: className, id }: InputProps) {
 export type ButtonProps = {
   class?: MaybeSignal<string>;
   id?: MaybeSignal<string>;
-  onClick?: (this: HTMLButtonElement, event: MouseEvent) => {};
+  onClick?: (this: HTMLButtonElement, event: MouseEvent) => void;
 };
 
 export function button(
