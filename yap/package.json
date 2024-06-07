@@ -2,8 +2,7 @@
   "name": "yap",
   "version": "0.0.0",
   "type": "module",
-  "types": "./dist/yap.d.ts",
-  "main": "./src/index.ts",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
