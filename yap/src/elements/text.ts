@@ -1,5 +1,6 @@
-import { MaybeSignal } from "$yap/signals";
-import { YapElement, addClassAndId, renderChildren } from "./core";
+import type { MaybeSignal } from "../signals";
+import type { YapElement } from "./core";
+import { addClassAndId, renderChildren } from "./core";
 
 export type TextElementProps = {
   class?: MaybeSignal<string>;
@@ -7,7 +8,7 @@ export type TextElementProps = {
 };
 export function h1(
   children: YapElement[] | MaybeSignal<string>,
-  { id, class: className }: TextElementProps = {},
+  { id, class: className }: TextElementProps = {}
 ) {
   return (parent: HTMLElement) => {
     const element = document.createElement("h1");
@@ -27,7 +28,7 @@ export function h1(
 
 export function h2(
   children: YapElement[] | MaybeSignal<string>,
-  { id, class: className }: TextElementProps = {},
+  { id, class: className }: TextElementProps = {}
 ) {
   return (parent: HTMLElement) => {
     const element = document.createElement("h2");
@@ -47,7 +48,7 @@ export function h2(
 
 export function p(
   children: YapElement[] | MaybeSignal<string>,
-  { id, class: className }: TextElementProps = {},
+  { id, class: className }: TextElementProps = {}
 ) {
   return (parent: HTMLElement) => {
     const element = document.createElement("p");

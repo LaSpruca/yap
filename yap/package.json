@@ -10,8 +10,8 @@
   },
   "exports": {
     ".": {
-      "import": "./dist/yap.js",
-      "require": "./dist/yap.umd.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.umd.js"
     }
   },
   "devDependencies": {

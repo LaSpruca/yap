@@ -1,5 +1,6 @@
-import { MaybeSignal } from "$yap/signals";
-import { YapElement, addClassAndId, renderChildren } from "./core";
+import type { MaybeSignal } from "../signals";
+import type { YapElement } from "./core";
+import { addClassAndId, renderChildren } from "./core";
 
 export type DivProps = {
   class?: MaybeSignal<string>;
@@ -12,7 +13,7 @@ export function div(children: YapElement[], options?: DivProps) {
     const removeStyleStuff = addClassAndId(
       element,
       options?.["class"],
-      options?.id,
+      options?.id
     );
     const removeChildren = renderChildren(element, children);
     parent.appendChild(element);

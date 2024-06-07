@@ -1,5 +1,6 @@
-import { MaybeSignal } from "$yap/signals";
-import { YapElement, addClassAndId, renderChildren } from "./core";
+import type { MaybeSignal } from "../signals";
+import type { YapElement } from "./core";
+import { addClassAndId, renderChildren } from "./core";
 
 export type InputProps = {
   onInput: (this: HTMLInputElement, ev: Event) => any;
@@ -32,7 +33,7 @@ export type ButtonProps = {
 
 export function button(
   children: MaybeSignal<string> | YapElement[],
-  { class: className, id, onClick }: ButtonProps = {},
+  { class: className, id, onClick }: ButtonProps = {}
 ) {
   return (parent: HTMLElement) => {
     const element = document.createElement("button");

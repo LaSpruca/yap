@@ -1,9 +1,10 @@
-import { MaybeSignal, createEffect, get } from "$yap/signals";
-import { YapElement } from "./core";
+import type { YapElement } from "./core";
+import type { MaybeSignal } from "../signals";
+import { createEffect, get } from "../signals";
 
 export function conditions(
   items: [MaybeSignal<boolean>, YapElement][],
-  fallback: YapElement = () => () => {},
+  fallback: YapElement = () => () => {}
 ) {
   return (parent: HTMLElement) => {
     let ci = items.length;
@@ -42,7 +43,7 @@ export function conditions(
 export function forEach<T>(
   itemsSignal: MaybeSignal<T[]>,
   extractKey: (item: T, index: number) => string,
-  render: (item: T) => YapElement,
+  render: (item: T) => YapElement
 ) {
   return (parent: HTMLElement) => {
     let rendered: Map<string, () => void> = new Map();
